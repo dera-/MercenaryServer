@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "test": "mocha --compilers js:espower-babel/guess --require test/setup --recursive test",
     "compile": "babel app --out-dir build --source-maps"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "mysql": "^2.9.0",
     "passport": "^0.3.0",
     "passport-twitter": "^1.0.3",
+    "redis-node": "^0.4.0",
     "serve-favicon": "^2.3.0"
   },
   "description": "げーむさーばー",
@@ -27,6 +29,7 @@
   "author": "dera-",
   "license": "ISC",
   "devDependencies": {
+    "database-cleaner": "^0.10.1",
     "espower-babel": "^3.3.0",
     "mocha": "^2.3.3",
     "power-assert": "^1.1.0"

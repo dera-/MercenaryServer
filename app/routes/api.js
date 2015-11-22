@@ -1,6 +1,6 @@
 let express = require('express'),
   router = express.Router(),
-  TwitterAuthService = require('../service/TwitterAuthService'),
+  TwitterAuthService = require('../domain/service/TwitterAuthService'),
   twitterAuthService = new TwitterAuthService();
 
 /* GET home page. */

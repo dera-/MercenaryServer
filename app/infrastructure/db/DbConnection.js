@@ -1,21 +1,22 @@
-let DbConnections = new Map(),
-  DbConfig = require('../../../config/db');
+import DbConfig from '../../../config/db';
+let env = process.env.NODE_ENV || 'dev';
+const DbConnections = new Map();
 
 export default class DbConnection {
-  constructor(dbName) {
+  constructor(dbNameKey) {
     let mysql = require('mysql');
     this.connection = mysql.createConnection({
-      host     : DbConfig.host, //接続先ホスト
-      user     : DbConfig.user,      //ユーザー名
-      password : DbConfig.password,  //パスワード
-      database : dbName    //DB名
+      host     : DbConfig[env].host, //接続先ホスト
+      user     : DbConfig[env].user,      //ユーザー名
+      password : DbConfig[env].password,  //パスワード
+      database : DbConfig[env]['db_names'][dbNameKey]    //DB名
     });
     this.pool = mysql.createPool({
       connectionLimit : 10,
-      host            : DbConfig.host,
-      user            : DbConfig.user,
-      password        : DbConfig.password,
-      database        : dbName    //DB名
+      host            : DbConfig[env].host,
+      user            : DbConfig[env].user,
+      password        : DbConfig[env].password,
+      database        : DbConfig[env]['db_names'][dbNameKey]    //DB名
     });
   }
 
@@ -27,8 +28,6 @@ export default class DbConnection {
   }
 
   execQueryInPool(query) {
-    console.log('execQueryInPool');
-    console.log(query);
     return new Promise((resolve, reject)=>{
       this.pool.query(query, (error, result) => {
         if (error) {
@@ -40,8 +39,6 @@ export default class DbConnection {
   }
 
   execQueryInConnection(query) {
-    console.log('execQueryInConnection');
-    console.log(query);
     return new Promise((resolve, reject)=>{
       this.connection.query(query, (error, result) => {
         if (error) {
@@ -53,7 +50,6 @@ export default class DbConnection {
   }
 
   beginTransaction() {
-    console.log('transaction');
     return new Promise((resolve, reject)=>{
       this.connection.beginTransaction((error) => {
         if (error) {
@@ -64,20 +60,18 @@ export default class DbConnection {
     });
   }
 
-  commit(result) {
-    console.log('commit');
+  commit() {
     return new Promise((resolve, reject)=>{
       this.connection.commit((error) => {
         if (error) {
           reject(error);
         }
-        resolve(result);
+        resolve();
       });
     });
   }
 
   rollback() {
-    console.log('rollback');
     this.connection.rollback();
   }
 }

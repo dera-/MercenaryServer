@@ -11,6 +11,7 @@ let express = require('express'),
   TwitterStrategy = require('passport-twitter').Strategy,
   app = express();
 
+process.env.NODE_ENV = 'dev';
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'jade');

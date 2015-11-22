@@ -43,6 +43,13 @@ exports.up = function(db) {
           mapping: 'id'
         }
       },
+      chara_type:
+      {
+        type: 'char',
+	values: ['PLAYER', 'FRIEND', 'ALLY'],
+        notNull: true,
+        length: 10,
+      },
       name:
       {
         type: 'char',
